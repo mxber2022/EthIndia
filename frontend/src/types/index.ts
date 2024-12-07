@@ -14,6 +14,7 @@ export interface Review {
   rating: number;
   review: string;
   date: string;
+  reviewer: string;
   verificationStatus: 'verified' | 'pending';
   amenities: string[];
   tlsVerification?: TLSVerification;
