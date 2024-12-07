@@ -28,6 +28,8 @@ export default function ZKEmailProofComponent() {
       // Generate the proof
       const generatedProof = await prover.generateProof(eml);
       const { proofData, publicData } = generatedProof.getProofData();
+      console.log("proofData: ", proofData);
+      console.log("publicData: ", publicData);
       setProof({ proofData, publicData });
     } catch (error) {
       console.error("Error generating proof:", error);
