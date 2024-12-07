@@ -59,14 +59,9 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
         throw new Error("Network response was not ok");
       }
 
-      const data = await response.json(); // Parse the response as JSON
-      console.log("data is: ", data);
-      // if (!response) {
-      //   throw new Error("Failed to generate proof");
-      // }
-
-      // const proofData = await response.
-      // return proofData;
+      const proofData = await response.json(); // Parse the response as JSON
+      console.log("proofData: ", proofData);
+      return proofData;
     } catch (error) {
       console.error("Error generating ZKEmail proof:", error);
       throw new Error("Failed to generate ZKEmail proof");
