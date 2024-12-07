@@ -49,7 +49,7 @@ To run this project locally, ensure you have the following installed:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/truststay.git
+   git clone https://github.com/mxber2022/truststay.git
    cd truststay
    ```
 
