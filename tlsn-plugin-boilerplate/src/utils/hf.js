@@ -5,28 +5,31 @@ function redirect(url) {
 }
 
 function notarize(options) {
+  console.log("hello");
   const { notarize } = Host.getFunctions();
+  console.log("hello1", notarize);
   const mem = Memory.fromString(JSON.stringify(options));
   const idOffset = notarize(mem.offset);
   const id = Memory.find(idOffset).readString();
+  console.log("helloid", id);
   return id;
 }
 
 function outputJSON(json) {
-  Host.outputString(
-    JSON.stringify(json),
-  );
+  Host.outputString(JSON.stringify(json));
 }
 
 function getCookiesByHost(hostname) {
-  const cookies = JSON.parse(Config.get('cookies'));
-  if (!cookies[hostname]) throw new Error(`cannot find cookies for ${hostname}`);
+  const cookies = JSON.parse(Config.get("cookies"));
+  if (!cookies[hostname])
+    throw new Error(`cannot find cookies for ${hostname}`);
   return cookies[hostname];
 }
 
 function getHeadersByHost(hostname) {
-  const headers = JSON.parse(Config.get('headers'));
-  if (!headers[hostname]) throw new Error(`cannot find headers for ${hostname}`);
+  const headers = JSON.parse(Config.get("headers"));
+  if (!headers[hostname])
+    throw new Error(`cannot find headers for ${hostname}`);
   return headers[hostname];
 }
 

@@ -8,12 +8,12 @@ TLSNotary's plugin system uses [Extism](https://github.com/extism), which enable
 
 1. **Download and Install Extism-js**: Begin by setting up `extism-js`, which enables you to compile and manage your plugins. Run these commands to download and install it:
 
-    ```sh
-    curl -O https://raw.githubusercontent.com/extism/js-pdk/main/install.sh
-    bash install.sh
-    ```
+   ```sh
+   curl -O https://raw.githubusercontent.com/extism/js-pdk/main/install.sh
+   sh install.sh
+   ```
 
-    This script installs the Extism JavaScript Plugin Development Kit from its GitHub repository, preparing your environment for plugin compilation.
+   This script installs the Extism JavaScript Plugin Development Kit from its GitHub repository, preparing your environment for plugin compilation.
 
 ## Building the Twitter Profile Plugin
 

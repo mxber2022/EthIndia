@@ -1,6 +1,12 @@
-import icon from '../assets/icon.png';
-import config_json from '../config.json';
-import { redirect, notarize, outputJSON, getCookiesByHost, getHeadersByHost } from './utils/hf.js';
+import icon from "../assets/icon.png";
+import config_json from "../config.json";
+import {
+  redirect,
+  notarize,
+  outputJSON,
+  getCookiesByHost,
+  getHeadersByHost,
+} from "./utils/hf.js";
 
 /**
  * Plugin configuration
@@ -12,21 +18,21 @@ import { redirect, notarize, outputJSON, getCookiesByHost, getHeadersByHost } fr
 export function config() {
   outputJSON({
     ...config_json,
-    icon: icon
+    icon: icon,
   });
 }
 
 function isValidHost(urlString: string) {
   const url = new URL(urlString);
-  return url.hostname === 'twitter.com' || url.hostname === 'x.com';
+  return url.hostname === "devfolio.co" || url.hostname === "devfolio.co";
 }
 
 /**
  * Implementation of the first (start) plugin step
-  */
+ */
 export function start() {
-  if (!isValidHost(Config.get('tabUrl'))) {
-    redirect('https://x.com');
+  if (!isValidHost(Config.get("tabUrl"))) {
+    redirect("https://devfolio.co");
     outputJSON(false);
     return;
   }
@@ -40,35 +46,33 @@ export function start() {
  * Note that the url needs to be specified in the `config` too, otherwise the request will be refused.
  */
 export function two() {
-  const cookies = getCookiesByHost('api.x.com');
-  const headers = getHeadersByHost('api.x.com');
+  const cookies = getCookiesByHost("devfolio.co");
+  const headers = getHeadersByHost("devfolio.co");
+  console.log("cookies is ", cookies);
+  // if (
+  //   // !cookies.auth_token ||
+  //   // !cookies.ct0 ||
+  //   // !headers['x-csrf-token'] ||
+  //   // !headers['authorization']
+  // ) {
+  //   outputJSON(false);
+  //   console.log("false ");
+  //   return;
+  // }
 
-  if (
-    !cookies.auth_token ||
-    !cookies.ct0 ||
-    !headers['x-csrf-token'] ||
-    !headers['authorization']
-  ) {
-    outputJSON(false);
-    return;
-  }
+  console.log(cookies.devfolio_auth);
+  console.log();
+  console.log(cookies.devfolio_user);
 
   outputJSON({
-    url: 'https://api.x.com/1.1/account/settings.json',
-    method: 'GET',
+    url: "https://api.devfolio.co/api/users/9bda9b43884647008ce0a577ae1a5681/basic_info",
+    method: "GET",
     headers: {
-      'x-twitter-client-language': 'en',
-      'x-csrf-token': headers['x-csrf-token'],
-      Host: 'api.x.com',
-      authorization: headers.authorization,
-      Cookie: `lang=en; auth_token=${cookies.auth_token}; ct0=${cookies.ct0}`,
-      'Accept-Encoding': 'identity',
-      Connection: 'close',
+      Host: "api.devfolio.co",
+      Cookie: `devfolio_auth=${cookies.devfolio_auth}; devfolio_user=${cookies.devfolio_user};`,
     },
     secretHeaders: [
-      `x-csrf-token: ${headers['x-csrf-token']}`,
-      `cookie: lang=en; auth_token=${cookies.auth_token}; ct0=${cookies.ct0}`,
-      `authorization: ${headers.authorization}`,
+      `cookie: devfolio_auth=${cookies.devfolio_auth}; devfolio_user=${cookies.devfolio_user};`,
     ],
   });
 }
@@ -82,16 +86,17 @@ export function two() {
 export function parseTwitterResp() {
   const bodyString = Host.inputString();
   const params = JSON.parse(bodyString);
-
-  if (params.screen_name) {
-    const revealed = `"screen_name":"${params.screen_name}"`;
+  console.log("check 1: ", params.username);
+  if (params.username) {
+    const revealed = `"username":"${params.username}"`;
+    console.log("revealed: ", revealed);
     const selectionStart = bodyString.indexOf(revealed);
-    const selectionEnd =
-      selectionStart + revealed.length;
+    const selectionEnd = selectionStart + revealed.length;
     const secretResps = [
       bodyString.substring(0, selectionStart),
       bodyString.substring(selectionEnd, bodyString.length),
     ];
+    console.log("secretResps: ", secretResps);
     outputJSON(secretResps);
   } else {
     outputJSON(false);
@@ -103,13 +108,14 @@ export function parseTwitterResp() {
  */
 export function three() {
   const params = JSON.parse(Host.inputString());
+  console.log("parama:", JSON.stringify(params));
 
   if (!params) {
     outputJSON(false);
   } else {
     const id = notarize({
       ...params,
-      getSecretResponse: 'parseTwitterResp',
+      getSecretResponse: "parseTwitterResp",
     });
     outputJSON(id);
   }
