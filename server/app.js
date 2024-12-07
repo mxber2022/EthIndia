@@ -141,6 +141,8 @@ async function generateProof() {
     } = proof.getProofData();
 
     const callData = await proof.createCallData();
+    const onchainstatius = await proof.verifyOnChain();
+    console.log("onchainstatius: ", onchainstatius);
 
     console.log("proof: ", proofData);
     console.log("public: ", publicData);
