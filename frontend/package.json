@@ -36,5 +36,6 @@
     "vite": "^5.4.2",
     "vite-plugin-top-level-await": "^1.4.4",
     "vite-plugin-wasm": "^3.3.0"
-  }
+  },
+  "proxy": "https://tlsnotary.org"
 }

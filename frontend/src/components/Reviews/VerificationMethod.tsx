@@ -20,9 +20,7 @@ export const VerificationMethod: React.FC<VerificationMethodProps> = ({
   const description = isTLS
     ? "Verify with zero-knowledge TLS proof"
     : "Verify with zero-knowledge email proof";
-  const logoUrl = isTLS
-    ? "https://tlsnotary.org/favicon.ico"
-    : "https://prove.email/assets/Logo.svg";
+  const logoUrl = isTLS ? "/tls.png" : "/zkemail.png";
 
   return (
     <button
