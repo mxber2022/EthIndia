@@ -152,3 +152,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 Let's build trust in the hotel review ecosystem with **TrustStay**, powered by **TLSNotary**!
+
+// curl -X POST http://localhost:3000/generate-proof

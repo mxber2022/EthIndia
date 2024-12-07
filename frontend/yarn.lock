@@ -1764,10 +1764,10 @@
     "@walletconnect/window-getters" "^1.0.1"
     tslib "1.14.1"
 
-"@zk-email/sdk@^0.0.70":
-  version "0.0.70"
-  resolved "https://registry.yarnpkg.com/@zk-email/sdk/-/sdk-0.0.70.tgz#d06ee1c358c731272390d06e07d57eed905fb4d5"
-  integrity sha512-Nsn140a240wqQeNRv3Q+jDSg31yHSmJl0cuh2SYVG8kfZgI25qFWWCZ3A73K1rdzEemQvrRSFMTnH1G5CZ0iAQ==
+"@zk-email/sdk@^0.0.75":
+  version "0.0.75"
+  resolved "https://registry.yarnpkg.com/@zk-email/sdk/-/sdk-0.0.75.tgz#3ff3246544a08a69b16db85f888eb0da66a67ca9"
+  integrity sha512-b2itEX/WT/h1NCUVaE+AT/R9Evpr2nHOPy0EZ1ljl7wxDE2G95fYX/S1HXYspVPgc5p3JhPLPiK8LEonWlvy8Q==
   dependencies:
     "@dimidumo/relayer-utils" "^0.4.47"
     ethers "^6.13.4"

@@ -39,12 +39,39 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
     }
   }, [initialize, isInitialized]);
 
-  // Reset file when verification method changes
   useEffect(() => {
     setBookingFile(null);
   }, [verificationMethod]);
 
   if (!isOpen) return null;
+
+  const generateZKEmailProof = async (file: File) => {
+    // const formData = new FormData();
+    // formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:3000/generate-proof", {
+        method: "POST",
+      });
+
+      // Check if the response is okay
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json(); // Parse the response as JSON
+      console.log("data is: ", data);
+      // if (!response) {
+      //   throw new Error("Failed to generate proof");
+      // }
+
+      // const proofData = await response.
+      // return proofData;
+    } catch (error) {
+      console.error("Error generating ZKEmail proof:", error);
+      throw new Error("Failed to generate ZKEmail proof");
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,16 +106,21 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
     setIsGeneratingProof(true);
 
     try {
-      // Simulate ZK proof generation
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      let proofData;
 
-      const bookingProof = bookingFile.name;
+      if (verificationMethod === "zkemail") {
+        proofData = await generateZKEmailProof(bookingFile);
+      } else {
+        // Simulate TLSNotary proof generation
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        proofData = { bookingProof: bookingFile.name };
+      }
 
       const tx = await mintReview({
         hotelId: hotel.id,
         rating,
         reviewText: review,
-        bookingProof,
+        bookingProof: JSON.stringify(proofData),
         verificationMethod,
       });
 
