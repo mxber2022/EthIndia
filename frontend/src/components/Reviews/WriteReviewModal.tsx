@@ -39,7 +39,36 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
     }
   }, [initialize, isInitialized]);
 
+  // Reset file when verification method changes
+  useEffect(() => {
+    setBookingFile(null);
+  }, [verificationMethod]);
+
   if (!isOpen) return null;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const isValidFileType =
+      verificationMethod === "zktls"
+        ? file.name.endsWith(".json")
+        : file.name.endsWith(".eml");
+
+    if (!isValidFileType) {
+      setError(
+        `Please select a ${
+          verificationMethod === "zktls" ? ".json" : ".eml"
+        } file for ${
+          verificationMethod === "zktls" ? "TLSNotary" : "ZKEmail"
+        } verification`
+      );
+      return;
+    }
+
+    setBookingFile(file);
+    setError(null);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +119,18 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
     } catch (err: any) {
       setError(err?.message || "Failed to connect wallet");
     }
+  };
+
+  const getFileUploadText = () => {
+    if (!verificationMethod) return "Select a verification method first";
+    return verificationMethod === "zktls"
+      ? "Upload your .json file for TLSNotary verification"
+      : "Upload your .eml file for ZKEmail verification";
+  };
+
+  const getAcceptedFileTypes = () => {
+    if (!verificationMethod) return "";
+    return verificationMethod === "zktls" ? ".json" : ".eml";
   };
 
   return (
@@ -190,7 +231,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Booking Confirmation
+                  Verification File
                 </label>
                 <div className="border-2 border-dashed rounded-lg p-4 text-center transition-colors hover:border-blue-400">
                   {bookingFile ? (
@@ -211,22 +252,22 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
                     <div className="space-y-2">
                       <Upload className="w-8 h-8 mx-auto text-gray-400" />
                       <div className="text-sm text-gray-600">
-                        Upload your booking confirmation for verification
+                        {getFileUploadText()}
                       </div>
                       <input
                         type="file"
-                        onChange={(e) =>
-                          setBookingFile(e.target.files?.[0] || null)
-                        }
+                        onChange={handleFileChange}
                         className="hidden"
                         id="booking-file"
-                        disabled={isSubmitting}
-                        accept=".pdf,.jpg,.png"
+                        disabled={isSubmitting || !verificationMethod}
+                        accept={getAcceptedFileTypes()}
                       />
                       <label
                         htmlFor="booking-file"
                         className={`inline-block px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition-all ${
-                          isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                          isSubmitting || !verificationMethod
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
                         }`}
                       >
                         Select File
