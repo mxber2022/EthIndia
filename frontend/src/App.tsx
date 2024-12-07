@@ -11,6 +11,7 @@ import { useReviewContract } from "./hooks/useReviewContract";
 import { Loader2, Shield } from "lucide-react";
 import type { Review } from "./types";
 import ZKEmailProofComponent from "./components/zkemail/zkemail";
+import { Footer } from "./components/Footer";
 
 function App() {
   const { hotels } = useHotels();
@@ -141,6 +142,7 @@ function App() {
         </section>
       </main>
 
+      <Footer />
       {reviewHotel && (
         <WriteReviewModal
           isOpen={isReviewOpen}
@@ -156,8 +158,6 @@ function App() {
           hotel={detailsHotel}
         />
       )}
-
-      <ZKEmailProofComponent />
     </div>
   );
 }
