@@ -115,7 +115,7 @@ export const WriteReviewModal: React.FC<WriteReviewModalProps> = ({
         hotelId: hotel.id,
         rating,
         reviewText: review,
-        bookingProof: JSON.stringify(proofData),
+        bookingProof: JSON.stringify("proofData"),
         verificationMethod,
       });
 

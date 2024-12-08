@@ -10,10 +10,7 @@ export const ProofGenerationOverlay: React.FC<ProofGenerationOverlayProps> = ({
 }) => {
   const title =
     method === "zktls" ? "Generating ZKTLS Proof" : "Generating ZKEmail Proof";
-  const logoUrl =
-    method === "zktls"
-      ? "https://tlsnotary.org/favicon.ico"
-      : "https://prove.email/assets/Logo.svg";
+  const logoUrl = method === "zktls" ? "/tls.png" : "/zkemail.png";
 
   return (
     <div className="absolute inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center z-10 animate-fade-in">
